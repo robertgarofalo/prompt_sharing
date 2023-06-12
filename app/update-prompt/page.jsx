@@ -31,29 +31,29 @@ const EditPrompt = () => {
 
     }, [promptId])
 
-    // const CreatePrompt = async (e) => {
-    //   e.preventDefault()
+    const updatePrompt = async (e) => {
+      e.preventDefault()
+      setSubmitting(true)
 
-    //   setSubmitting(true)
-    //   try {
-    //     const response = await fetch('/api/prompt/new', {
-    //       method: 'POST',
-    //       body: JSON.stringify({
-    //         prompt: post.prompt,
-    //         userId: session?.user.id,
-    //         tag: post.tag
-    //       }) 
-    //     })
+      if(!promptId) return alert('PromptID not found')
+      try {
+        const response = await fetch(`/api/prompt/${promptId}`, {
+          method: 'PATCH',
+          body: JSON.stringify({
+            prompt: post.prompt,
+            tag: post.tag
+          }) 
+        })
 
-    //     if(response.ok) {
-    //       router.push('/')
-    //     }
-    //   } catch (error) {
-    //     console.log(error)
-    //   } finally {
-    //     setSubmitting(false)
-    //   }
-    // }
+        if(response.ok) {
+          router.push('/profile')
+        }
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setSubmitting(false)
+      }
+    }
     
   return (
     <Form 
@@ -61,7 +61,7 @@ const EditPrompt = () => {
     post={post}
     setPost={setPost}
     submitting={submitting}
-    handleSubmit={() => {}}
+    handleSubmit={updatePrompt}
     />
   )
 }
